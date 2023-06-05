@@ -1,7 +1,34 @@
 {
   "users": [
-    {"id": 1, "name": "Myra"}
+    {
+      "id": 1,
+      "name": "Myra"
+    },
+    {
+      "name": "Jane Lindgren PhD",
+      "id": 2
+    },
+    {
+      "name": "Hope Streich",
+      "id": 3
+    },
+    {
+      "name": "Ramon Ritchie",
+      "id": 4
+    },
+    {
+      "name": "Lorena Herzog",
+      "id": 5
+    },
+    {
+      "name": "Melba Cremin",
+      "id": 6
+    },
+    {
+      "name": "Sergio Thiel",
+      "id": 7
+    }
   ],
   "albums": [],
-  "photos": [] 
+  "photos": []
 }

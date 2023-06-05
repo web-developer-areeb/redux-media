@@ -1,30 +1,57 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "../store";
+import { useSelector } from "react-redux";
+import { fetchUsers, addUser } from "../store";
+import   Button  from "./Button"
 import Skeleton from "./Skeleton";
+import useThunk from "../hooks/useThunk";
+
 
 function UsersList() {
-  const dispatch = useDispatch();
-  const {isLoading, data, error } = useSelector((state) => {
+  const [doFetchUsers, isLoadingUsers, loadingUsersError] = useThunk(fetchUsers);
+  const [doCreateUser, isCreatingUser, creatingUserError] = useThunk(addUser);
+
+  const { data } = useSelector((state) => {
     return state.user;
   });
 
-  
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, []);
-  
-  if(isLoading) {
-    return <Skeleton times={6} className="h-10 w-full" />
+    doFetchUsers();
+  }, [doFetchUsers]);
+
+  const handleAddUser = (e) => {
+    doCreateUser();
   }
 
-  if(error) {
-    return <div>Error fetching data...</div>
+  const renderedUsers = data.map((user) => (
+    <div key={user.id} className="mb-2 border rounded">
+      <div className="flex p-2 justify-between items-center cursor-pointer">
+        {user.name}
+      </div>
+    </div>
+  ));
+
+  if (isLoadingUsers) {
+    return <Skeleton times={6} className="h-10 w-full" />;
+  }
+
+  if (loadingUsersError) {
+    return <div>Error fetching data...</div>;
   }
 
   return (
-    <div>{data.length}</div>
+    <div>
+      <div className="flex flex-row justify-between m-3">
+        <h1 className="m-2 text-xl">Users</h1>
+        {
+          isCreatingUser
+          ? 'Creating User...'
+          : <Button onClick={handleAddUser} >+ Add User</Button>
+        }
+        {creatingUserError && 'Error creating user... '}
+      </div>
+      {renderedUsers}
+    </div>
   )
-};
+}
 
 export default UsersList;
